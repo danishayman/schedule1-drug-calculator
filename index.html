@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='55%' x='10%' font-size='85' fill='%2350fa7b'>💊</text></svg>">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Schedule 1 Drug Mix Calculator</title>
@@ -12,49 +13,48 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
   <style>
     body {
-      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
-      color: #caffb9;
+      background: radial-gradient(circle at center, #2a003f 0%, #0c001a 60%, #000000 100%);
+      color: #e1ffe1;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      animation: fadeIn 1s ease-in-out;
       overflow-x: hidden;
       margin: 0;
       padding: 0;
     }
     .select2-container--default .select2-selection--multiple,
     .select2-container--default .select2-selection--single {
-      background-color: #fff;
-      color: #000;
-      border: 1px solid #ccc;
+      background-color: #151515;
+      color: #caffb9;
+      border: 1px solid #50fa7b;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+      box-shadow: 0 0 6px rgba(80, 250, 123, 0.3);
+      transition: border-color 0.3s ease;
     }
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
-      background-color: #e8ffe8;
-      color: #000;
-      border: 1px solid #32cd32;
+      background-color: #2a2a2a;
+      color: #caffb9;
+      border: 1px solid #50fa7b;
+      border-radius: 6px;
+      padding: 2px 6px;
+      margin: 3px 4px 3px 0;
+      font-size: 0.9rem;
     }
-    .select2-results__option { color: #000; }
-    .nug {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #3bff3b;
-      border-radius: 50%;
-      opacity: 0.1;
-      animation: drift 30s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes drift {
-      0% { transform: translateY(-10%) rotate(0deg); }
-      100% { transform: translateY(120vh) rotate(360deg); }
+    .select2-results__option {
+      color: #caffb9;
+      background-color: #1a1a1a;
+      padding: 10px;
+      font-size: 0.95rem;
     }
     .container {
-      background-color: rgba(0, 0, 0, 0.7);
-      max-width: 600px;
+      background: rgba(0, 0, 0, 0.75);
+      max-width: 620px;
       margin: 50px auto;
       padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #50fa7b;
+      border-radius: 22px;
+      box-shadow: 0 0 20px rgba(80, 250, 123, 0.6), 0 0 40px rgba(128, 0, 128, 0.3);
       border: 2px solid #50fa7b;
-      animation: float 3s ease-in-out infinite;
+      animation: float 4s ease-in-out infinite;
       position: relative;
       z-index: 10;
     }
@@ -67,25 +67,30 @@
       width: 100%;
       padding: 12px;
       margin-top: 15px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
+      font-size: 1rem;
+      background: #151515;
+      color: #caffb9;
+      box-shadow: 0 0 6px rgba(80, 250, 123, 0.3);
     }
     button#mixBtn {
-      background-color: #32cd32;
-      color: black;
+      background: linear-gradient(to right, #50fa7b, #28a428);
+      color: #000;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: transform 0.2s ease;
     }
     button#mixBtn:hover {
-      background-color: #28a428;
+      transform: scale(1.03);
     }
     button#resetBtn {
-      background-color: #ff4c4c;
+      background: linear-gradient(to right, #ff4c4c, #a80000);
       color: white;
       font-weight: bold;
       cursor: pointer;
       margin-top: 10px;
+      transition: transform 0.2s ease;
     }
     .result {
       margin-top: 25px;
@@ -113,143 +118,30 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+    
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+      to { opacity: 1; }
+    }
     @keyframes float {
       0% { transform: translateY(0); }
       50% { transform: translateY(-5px); }
       100% { transform: translateY(0); }
     }
   </style>
+  
+  
 </head>
-<body>
-  <script>
-    const effectRules = {
-      "Cuke": {
-        "Toxic": "Euphoric",
-        "Slippery": "Munchies",
-        "Sneaky": "Paranoia",
-        "Foggy": "Cyclopean",
-        "Gingeritis": "Thought-Provoking",
-        "Munchies": "Athletic",
-        "Euphoric": "Laxative"
-      },
-      "Flu Medicine": {
-        "Calming": "Bright-Eyed",
-        "Athletic": "Munchies",
-        "Thought-Provoking": "Gingeritis",
-        "Cyclopean": "Foggy",
-        "Munchies": "Slippery",
-        "Laxative": "Euphoric",
-        "Euphoric": "Toxic",
-        "Focused": "Calming",
-        "Electrifying": "Refreshing",
-        "Shrinking": "Paranoia"
-      },
-      "Gasoline": {
-        "Gingeritis": "Smelly",
-        "Jennerising": "Sneaky",
-        "Sneaky": "Tropic Thunder",
-        "Munchies": "Sedating",
-        "Energizing": "Euphoric",
-        "Euphoric": "Energizing",
-        "Laxative": "Foggy",
-        "Disorienting": "Glowing",
-        "Paranoia": "Calming",
-        "Electrifying": "Disorienting",
-        "Shrinking": "Focused"
-      }
-    };
-
-    const basePrices = {
-      "OG Kush": 35,
-      "Sour Diesel": 35,
-      "Green Crack": 35,
-      "Grand Daddy Purp": 35,
-      "Cocaine": 150,
-      "Meth": 70
-    };
-
-    const baseEffects = {
-      "OG Kush": "Calming",
-      "Sour Diesel": "Bright-Eyed",
-      "Green Crack": "Energizing",
-      "Grand Daddy Purp": "Sedating",
-      "Cocaine": "Electrifying",
-      "Meth": "Focused"
-    };
-
-    const effectMultipliers = {
-      "Anti-Gravity": 0.54, "Athletic": 0.32, "Balding": 0.30, "Bright-Eyed": 0.40,
-      "Calming": 0.10, "Calorie-Dense": 0.28, "Cyclopean": 0.56, "Disorienting": 0.00,
-      "Electrifying": 0.50, "Energizing": 0.22, "Euphoric": 0.18, "Explosive": 0.00,
-      "Focused": 0.16, "Foggy": 0.36, "Gingeritis": 0.20, "Glowing": 0.48,
-      "Jennerising": 0.42, "Laxative": 0.00, "Long Faced": 0.52, "Munchies": 0.12,
-      "Paranoia": 0.00, "Refreshing": 0.14, "Schizophrenia": 0.00, "Sedating": 0.26,
-      "Seizure-Inducing": 0.00, "Shrinking": 0.60, "Slippery": 0.34, "Smelly": 0.00,
-      "Sneaky": 0.24, "Spicy": 0.38, "Thought-Provoking": 0.44, "Toxic": 0.00,
-      "Tropic Thunder": 0.46, "Zombifying": 0.58
-    };
-
-    $(document).ready(function () {
-      $('#substances').select2({ width: '100%' });
-
-      $('#resetBtn').click(function () {
-        $('#strain').val('OG Kush');
-        $('#substances').val(null).trigger('change');
-        $('#result').html('');
-      });
-
-      $('#mixBtn').click(function () {
-        const strain = $('#strain').val();
-        const basePrice = basePrices[strain];
-        let effects = [];
-        const substances = $('#substances').val();
-
-        const baseEffect = baseEffects[strain];
-        if (baseEffect) effects.push(baseEffect);
-
-        const defaultEffectMap = {
-          "Cuke": "Energizing",
-          "Flu Medicine": "Sedating",
-          "Gasoline": "Toxic",
-          "Donut": "Calorie-Dense",
-          "Energy Drink": "Athletic",
-          "Mouth Wash": "Balding",
-          "Motor Oil": "Slippery",
-          "Banana": "Gingeritis",
-          "Chili": "Spicy",
-          "Iodine": "Jennerising",
-          "Paracetamol": "Sneaky",
-          "Viagra": "Tropic Thunder",
-          "Horse Semen": "Long Faced",
-          "Mega Bean": "Foggy",
-          "Addy": "Thought-Provoking",
-          "Battery": "Bright-Eyed"
-        };
-
-        for (const substance of substances) {
-          const rules = effectRules[substance] || {};
-          effects = effects.map(eff => rules[eff] || eff);
-          const defaultEffect = defaultEffectMap[substance];
-          if (defaultEffect && effects.length < 8 && !effects.includes(defaultEffect)) {
-            effects.push(defaultEffect);
-          }
-        }
-
-        effects = [...new Set(effects)].slice(0, 8);
-        const totalMultiplier = effects.reduce((sum, eff) => sum + (effectMultipliers[eff] || 0), 0);
-        const finalPrice = basePrice * (1 + totalMultiplier);
-
-        $('#result').html(
-          `<div><strong>Effects:</strong> ${effects.join(', ')}</div>
-           <div><strong>Total Multiplier:</strong> ${totalMultiplier.toFixed(2)}</div>
-           <div><strong>Final Price:</strong> $${finalPrice.toFixed(2)}</div>`
-        );
-      });
-    });
-  </script>
+<body id="top">
+<div style="text-align: center; margin-top: 30px;">
+  <div style="display: inline-block; padding: 10px 20px; border: 2px solid #50fa7b; border-radius: 12px; font-weight: bold; font-size: 1.4rem; color: #50fa7b; background: rgba(80,250,123,0.05); box-shadow: 0 0 10px rgba(80,250,123,0.4);">
+    💊 S1 CalC
+  </div>
+</div>
 
 <div class="container">
-  <h1>Schedule 1 Drug Mix Calculator</h1>
+  <h1 style="font-size: 1.8rem; letter-spacing: 1px;">Schedule 1 Drug Mix Calculator</h1>
   <label for="strain">Choose Base Product</label>
   <select id="strain">
     <option value="OG Kush">OG Kush</option>
@@ -261,90 +153,155 @@
   </select>
 
   <label for="substances">Choose Substances</label>
-  <select id="substances" multiple>
-    <option value="Cuke">Cuke</option>
-    <option value="Flu Medicine">Flu Medicine</option>
-    <option value="Gasoline">Gasoline</option>
-    <option value="Donut">Donut</option>
-    <option value="Energy Drink">Energy Drink</option>
-    <option value="Mouth Wash">Mouth Wash</option>
-    <option value="Motor Oil">Motor Oil</option>
-    <option value="Banana">Banana</option>
-    <option value="Chili">Chili</option>
-    <option value="Iodine">Iodine</option>
-    <option value="Paracetamol">Paracetamol</option>
-    <option value="Viagra">Viagra</option>
-    <option value="Horse Semen">Horse Semen</option>
-    <option value="Mega Bean">Mega Bean</option>
-    <option value="Addy">Addy</option>
-    <option value="Battery">Battery</option>
-  </select>
+  <select id="substances" multiple></select>
 
   <button id="mixBtn">Mix!</button>
   <button id="resetBtn">Reset</button>
   <div class="result" id="result"></div>
 </div>
+</div>
 
 <div class="explainer">
   <h3>How It Works</h3>
-  <p>Select a base drug or strain, then choose up to 7 substances. Each adds a unique effect with a price multiplier. Maximum 8 effects total per mix. Effects stack and influence final pricing!</p>
-  <p>There are potentially <strong>millions</strong> of combinations between substances and strains. Discover profitable mixes or weird experimental results — it’s part science, part chaos!</p>
-</div>
-
-<div class="effect-count">
-  🌿 Over <strong>10,000,000+</strong> possible mix combinations!<br>
-  🎯 Use this calculator to find rare, valuable combos!
+  <p>This calculator simulates mixing drugs in the game <strong>Schedule 1</strong>. You start by choosing a base product (like OG Kush or Meth), each of which has a built-in base effect and value.</p>
+  <p>Then, you can add up to 7 substances. Each one may modify existing effects using special rules, and also adds its own default effect if there's room (maximum 8 total effects).</p>
+  <p>Each effect has a value multiplier that increases the final price. The total price is calculated as: <code>Base Price × (1 + Sum of Effect Multipliers)</code>.</p>
+  <p>You’ll also see the total cost of the substances you added, and your profit — calculated by subtracting that cost from the final price.</p>
 </div>
 
 <div class="explainer">
   <h3>Effect Multipliers</h3>
-  <table style="width:100%; border-collapse: collapse; background-color: #121212; color: #caffb9; border: 1px solid #50fa7b;">
+  <table id="effectTable" style="width:100%; border-collapse: collapse; background-color: #121212; color: #caffb9; border: 1px solid #50fa7b;">
     <thead>
       <tr style="background-color: #2c2c2c;">
         <th style="padding: 10px; border: 1px solid #50fa7b;">Effect</th>
         <th style="padding: 10px; border: 1px solid #50fa7b;">Multiplier</th>
       </tr>
     </thead>
-    <tbody>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Anti-Gravity</td><td>0.54</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Athletic</td><td>0.32</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Bright-Eyed</td><td>0.40</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Calming</td><td>0.10</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Cyclopean</td><td>0.56</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Disorienting</td><td>0.00</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Electrifying</td><td>0.50</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Energizing</td><td>0.22</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Euphoric</td><td>0.18</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Focused</td><td>0.16</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Foggy</td><td>0.36</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Glowing</td><td>0.48</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Jennerising</td><td>0.42</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Munchies</td><td>0.12</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Refreshing</td><td>0.14</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Sedating</td><td>0.26</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Shrinking</td><td>0.60</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Slippery</td><td>0.34</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Sneaky</td><td>0.24</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Spicy</td><td>0.38</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Thought-Provoking</td><td>0.44</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Tropic Thunder</td><td>0.46</td></tr>
-      <tr><td style="padding: 8px; border: 1px solid #50fa7b;">Zombifying</td><td>0.58</td></tr>
-    </tbody>
+    <tbody id="effectTableBody"></tbody>
   </table>
 </div>
 
 <div class="explainer">
   <h3>Substance Mixing Rules</h3>
   <p>When a substance is added to a strain, it may define rules that alter the current list of effects on that strain. Each rule checks for a specific effect and replaces it with another.</p>
-  <p>These rules are applied in order of the substances added. For each substance, all of its replacement rules are evaluated against the existing effects at that moment. If an effect targeted by a rule is present, it is replaced by the specified new effect immediately.</p>
-  <p>After all rules of a substance are processed, the substance's default effect is added to the mix if the strain has fewer than 8 total effects. If the strain already has 8 effects, the default effect is skipped.</p>
-  <p>Replacement effects can themselves be replaced by future substances if applicable. This means the order in which substances are mixed directly affects the final result. All effects are capped to a maximum of 8 and duplicates are removed automatically.</p>
+  <p>These rules are applied in the order the substances are added. For each substance, all its replacement rules are evaluated against the current effect list. If a rule matches an effect, the effect is replaced immediately.</p>
+  <p>After the replacement rules are processed, the substance’s default effect is added (if not already present) and the effect count is below 8. If there are already 8 effects, the default effect is skipped.</p>
+  <p>Replacement effects can also be replaced by later substances — so the order you mix matters! Maximum 8 effects per mix, and duplicates are automatically removed.</p>
 </div>
-<footer style="text-align: center; padding: 20px; font-size: 0.9em; background-color: #111; color: #ccc; margin-top: 40px;">
-  <p>
-    🔗 Check out the game on <a href="https://store.steampowered.com/app/3164500/Schedule_I/" target="_blank" style="color: #50fa7b; text-decoration: none;">Steam</a>
-    | 👨‍💻 Copy pasta from <a href="https://schedule1-calculator.com/" target="_blank" style="color: #50fa7b; text-decoration: none;">schedule1-calculator.com</a>
-  </p>
+
+<script>
+  const effectMultipliers = {
+    "Anti-Gravity": 0.54, "Athletic": 0.32, "Balding": 0.30, "Bright-Eyed": 0.40,
+    "Calming": 0.10, "Calorie-Dense": 0.28, "Cyclopean": 0.56, "Disorienting": 0.00,
+    "Electrifying": 0.50, "Energizing": 0.22, "Euphoric": 0.18, "Explosive": 0.00,
+    "Focused": 0.16, "Foggy": 0.36, "Gingeritis": 0.20, "Glowing": 0.48,
+    "Jennerising": 0.42, "Laxative": 0.00, "Long Faced": 0.52, "Munchies": 0.12,
+    "Paranoia": 0.00, "Refreshing": 0.14, "Schizophrenia": 0.00, "Sedating": 0.26,
+    "Seizure-Inducing": 0.00, "Shrinking": 0.60, "Slippery": 0.34, "Smelly": 0.00,
+    "Sneaky": 0.24, "Spicy": 0.38, "Thought-Provoking": 0.44, "Toxic": 0.00,
+    "Tropic Thunder": 0.46, "Zombifying": 0.58
+  };
+
+  const substancePrices = {
+    "Cuke": 2, "Banana": 2, "Paracetamol": 3, "Donut": 3, "Viagra": 4,
+    "Mouth Wash": 4, "Flu Medicine": 5, "Gasoline": 5, "Energy Drink": 6,
+    "Motor Oil": 6, "Mega Bean": 7, "Chili": 7, "Battery": 8, "Iodine": 8,
+    "Addy": 9, "Horse Semen": 9
+  };
+
+  const effectRules = {
+    "Cuke": {"Toxic": "Euphoric", "Slippery": "Munchies", "Sneaky": "Paranoia", "Foggy": "Cyclopean", "Gingeritis": "Thought-Provoking", "Munchies": "Athletic", "Euphoric": "Laxative"},
+    "Flu Medicine": {"Calming": "Bright-Eyed", "Athletic": "Munchies", "Thought-Provoking": "Gingeritis", "Cyclopean": "Foggy", "Munchies": "Slippery", "Laxative": "Euphoric", "Euphoric": "Toxic", "Focused": "Calming", "Electrifying": "Refreshing", "Shrinking": "Paranoia"},
+    "Gasoline": {"Gingeritis": "Smelly", "Jennerising": "Sneaky", "Sneaky": "Tropic Thunder", "Munchies": "Sedating", "Energizing": "Euphoric", "Euphoric": "Energizing", "Laxative": "Foggy", "Disorienting": "Glowing", "Paranoia": "Calming", "Electrifying": "Disorienting", "Shrinking": "Focused"}
+  };
+
+  const basePrices = {"OG Kush": 35, "Sour Diesel": 35, "Green Crack": 35, "Grand Daddy Purp": 35, "Cocaine": 150, "Meth": 70};
+
+  const baseEffects = {"OG Kush": "Calming", "Sour Diesel": "Bright-Eyed", "Green Crack": "Energizing", "Grand Daddy Purp": "Sedating", "Cocaine": "Electrifying", "Meth": "Focused"};
+
+  const defaultEffectMap = {
+    "Cuke": "Energizing", "Flu Medicine": "Sedating", "Gasoline": "Toxic", "Donut": "Calorie-Dense", "Energy Drink": "Athletic", "Mouth Wash": "Balding", "Motor Oil": "Slippery", "Banana": "Gingeritis", "Chili": "Spicy", "Iodine": "Jennerising", "Paracetamol": "Sneaky", "Viagra": "Tropic Thunder", "Horse Semen": "Long Faced", "Mega Bean": "Foggy", "Addy": "Thought-Provoking", "Battery": "Bright-Eyed"
+  };
+
+  function populateEffectTable() {
+    const tbody = document.getElementById("effectTableBody");
+    tbody.innerHTML = '';
+    const sortedKeys = Object.keys(effectMultipliers).sort();
+    for (const key of sortedKeys) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td style="padding: 8px; border: 1px solid #50fa7b;">${key}</td>
+        <td style="padding: 8px; border: 1px solid #50fa7b;">${effectMultipliers[key].toFixed(2)}</td>
+      `;
+      tbody.appendChild(row);
+    }
+  }
+
+  function populateSubstanceSelector() {
+    const $select = $('#substances');
+    $select.empty();
+    Object.keys(defaultEffectMap).forEach(substance => {
+      $select.append(`<option value="${substance}">${substance} ($${substancePrices[substance] || 0})</option>`);
+    });
+    $select.select2({ width: '100%' });
+  }
+
+  $(document).ready(function () {
+    populateEffectTable();
+    populateSubstanceSelector();
+
+    $('#resetBtn').click(function () {
+      $('#strain').val('OG Kush');
+      $('#substances').val(null).trigger('change');
+      $('#result').html('');
+    });
+
+    $('#mixBtn').click(function () {
+      const strain = $('#strain').val();
+      const basePrice = basePrices[strain];
+      let effects = [];
+      const substances = $('#substances').val();
+
+      const baseEffect = baseEffects[strain];
+      if (baseEffect) effects.push(baseEffect);
+
+      for (const substance of substances) {
+        const rules = effectRules[substance] || {};
+        effects = effects.map(eff => rules[eff] || eff);
+        const defaultEffect = defaultEffectMap[substance];
+        if (defaultEffect && effects.length < 8 && !effects.includes(defaultEffect)) {
+          effects.push(defaultEffect);
+        }
+      }
+
+      effects = [...new Set(effects)].slice(0, 8);
+      const totalMultiplier = effects.reduce((sum, eff) => sum + (effectMultipliers[eff] || 0), 0);
+      const finalPrice = basePrice * (1 + totalMultiplier);
+      const totalCost = substances.reduce((sum, s) => sum + (substancePrices[s] || 0), 0);
+      const profit = finalPrice - totalCost;
+
+      $('#result').html(
+        `<div><strong>Effects:</strong> ${effects.join(', ')}</div>
+         <div><strong>Total Multiplier:</strong> ${totalMultiplier.toFixed(2)}</div>
+         <div><strong>Final Price:</strong> $${finalPrice.toFixed(2)}</div>
+         <div><strong>Substance Cost:</strong> $${totalCost.toFixed(2)}</div>
+         <div><strong>Profit:</strong> $${profit.toFixed(2)}</div>`
+      );
+    });
+  });
+</script>
+<footer style="text-align: center; margin-top: 60px; padding: 20px; color: #888; font-size: 0.9rem;">
+  🌐 Check out the game on <a href="https://store.steampowered.com/app/3164500/Schedule_I/" target="_blank" style="color: #50fa7b; text-decoration: none;">Steam</a> |
+  💻 View this tool's code on <a href="https://github.com/Leooehh/schedule1-drug-calculator" target="_blank" style="color: #50fa7b; text-decoration: none;">GitHub</a>
+  <div style="margin-top: 10px; font-size: 0.85rem;">
+    🔖 Version: <strong>v1.0</strong>
+  </div>
+  <div style="margin-top: 10px;">
+    <a href="#top" style="color: #50fa7b; text-decoration: none; font-weight: bold;">⬆ Back to Top</a>
+  </div>
+  
+  </div>
 </footer>
 </body>
 </html>
