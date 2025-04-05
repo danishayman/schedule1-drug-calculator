@@ -1,6 +1,8 @@
 # Schedule 1 Drug Mix Calculator
-Direct Link : https://leooehh.github.io/schedule1-drug-calculator/
 An interactive tool for the game [Schedule I](https://store.steampowered.com/app/3164500/Schedule_I/) that lets you combine strains and substances to calculate final product pricing based on effects and multipliers.
+
+##Direct Link : https://leooehh.github.io/schedule1-drug-calculator/
+
 
 ## 🌿 Features
 
