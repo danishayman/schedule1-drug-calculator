@@ -1,6 +1,5 @@
 # Schedule 1 Drug Mix Calculator! 
 
-[image](https://github.com/user-attachments/assets/3e25b860-6099-440a-aa81-5a2bf770a217)
 
 An interactive tool for the game [Schedule I](https://store.steampowered.com/app/3164500/Schedule_I/) that lets you combine strains and substances to calculate final product pricing based on effects and multipliers.
 
