@@ -3,7 +3,7 @@
 
 An interactive tool for the game [Schedule I](https://store.steampowered.com/app/3164500/Schedule_I/) that lets you combine strains and substances to calculate final product pricing based on effects and multipliers.
 
-Direct Link : https://leooehh.github.io/schedule1-drug-calculator/
+Direct Link : https://github.com/danishayman/schedule1-drug-calculator
 
 
 ## 🌿 Features
@@ -41,5 +41,5 @@ Final Price = Base Price × (1 + Sum of Effect Multipliers)
 ## 🔗 Links
 
 - 🎮 [Game on Steam](https://store.steampowered.com/app/3164500/Schedule_I/)
-- 🌐 [Live Web Version](https://leooehh.github.io/schedule1-drug-mix-calculator/)
+- 🌐 [Live Web Version](https://danishayman.github.io/schedule1-drug-calculator/)
 - 💌 Thanks to the original [schedule1-calculator.com](https://schedule1-calculator.com) project for providing the core mixing data logic and inspiration!
